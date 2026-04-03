@@ -12,5 +12,11 @@ namespace GameBackLogApi.Controllers
             new() {ID = 2, Title = "CS:GO", Genre = "FPS", Status = "DROPPED"},
             new() {ID = 3, Title = "Cyberpunk 2077", Genre = "RPG", Status = "Wishlist" }
         };
+
+        [HttpGet]
+        public IEnumerable<Game> GetAll()
+        {
+            return games;
+        }
     }
 }
