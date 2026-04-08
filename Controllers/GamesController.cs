@@ -51,7 +51,27 @@ namespace GameBackLogApi.Controllers
 
         }
 
-            
+        [HttpPut("{id}")]
+
+        public ActionResult<Game> UpdateGame(int id, Game UpdatingGame)
+        {
+            var game = games.FirstOrDefault(g => g.ID == id);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                game.Title = UpdatingGame.Title;
+                game.Genre = UpdatingGame.Genre;
+                game.Status = UpdatingGame.Status;
+
+                return game;
+            }
+
+
+        }
+
         [HttpDelete("{id}")]
 
         public ActionResult<Game> DeleteGame(int id)
