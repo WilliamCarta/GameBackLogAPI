@@ -1,8 +1,14 @@
+using GameBackLogApi;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<GameBackLogContext>(options => options.UseSqlite("Data Source=gamebacklog.db"));
 
 var app = builder.Build();
 
