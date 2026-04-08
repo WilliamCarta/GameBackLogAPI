@@ -7,17 +7,19 @@ namespace GameBackLogApi.Controllers
     [Route("[controller]")]
     public class GamesController : ControllerBase
     {
-        private static List<Game> games = new List<Game>
+
+        private GameBackLogContext _context;
+
+        public GamesController(GameBackLogContext context) 
         {
-            new() {ID = 1, Title = "Hollow Knight", Genre = "Platformer", Status = "PLAYING"},
-            new() {ID = 2, Title = "CS:GO", Genre = "FPS", Status = "DROPPED"},
-            new() {ID = 3, Title = "Cyberpunk 2077", Genre = "RPG", Status = "WISHLIST" }
-        };
+            _context = context;
+        }
+            
 
         [HttpGet]
         public IEnumerable<Game> GetAll()
         {
-            return games;
+            return _context.Games;
         }
 
         //On crée une methode HttpGet pour récupérer le jeu que l'on souhaite en fonction de son id (URL/games/id)
@@ -26,7 +28,7 @@ namespace GameBackLogApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<Game> GetByID(int id)
         {
-            var game = games.FirstOrDefault(g => g.ID == id);
+            var game = _context.Games.FirstOrDefault(g => g.ID == id);
             
             if (game == null)
             {
@@ -40,22 +42,17 @@ namespace GameBackLogApi.Controllers
         [HttpPost]
 
         public ActionResult<Game> CreateGame(Game newGame)
-        {
-            int newID = games.Count + 1;
-
-            newGame.ID = newID;
-
-            games.Add(newGame);
-
+        {   
+            _context.Games.Add(newGame);
+            _context.SaveChanges();
             return newGame;
-
         }
 
         [HttpPut("{id}")]
 
         public ActionResult<Game> UpdateGame(int id, Game UpdatingGame)
         {
-            var game = games.FirstOrDefault(g => g.ID == id);
+            var game = _context.Games.FirstOrDefault(g => g.ID == id);
             if (game == null)
             {
                 return NotFound();
@@ -65,7 +62,7 @@ namespace GameBackLogApi.Controllers
                 game.Title = UpdatingGame.Title;
                 game.Genre = UpdatingGame.Genre;
                 game.Status = UpdatingGame.Status;
-
+                _context.SaveChanges();
                 return game;
             }
 
@@ -76,7 +73,7 @@ namespace GameBackLogApi.Controllers
 
         public ActionResult<Game> DeleteGame(int id)
         {
-            var game = games.FirstOrDefault(g => g.ID == id);
+            var game = _context.Games.FirstOrDefault(g => g.ID == id);
 
             if (game == null)
             {
@@ -84,8 +81,8 @@ namespace GameBackLogApi.Controllers
             }
             else
             {
-                games.Remove(game);
-
+                _context.Games.Remove(game);
+                _context.SaveChanges();
                 return NoContent();
             }
         }
