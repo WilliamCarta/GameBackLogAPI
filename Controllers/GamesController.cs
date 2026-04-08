@@ -39,7 +39,7 @@ namespace GameBackLogApi.Controllers
 
         [HttpPost]
 
-        public ActionResult<Game> Add(Game newGame)
+        public ActionResult<Game> CreateGame(Game newGame)
         {
             int newID = games.Count + 1;
 
@@ -51,7 +51,24 @@ namespace GameBackLogApi.Controllers
 
         }
 
-       
+            
+        [HttpDelete("{id}")]
+
+        public ActionResult<Game> DeleteGame(int id)
+        {
+            var game = games.FirstOrDefault(g => g.ID == id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                games.Remove(game);
+
+                return NoContent();
+            }
+        }
 
     }
 }
