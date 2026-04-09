@@ -11,23 +11,20 @@ namespace GameBackLogApi.Controllers
     public class AuthController : ControllerBase
     {
         private IConfiguration _configuration;
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, GameBackLogContext context)
         {
+            _context = context;
             _configuration = configuration;
         }
 
-        private static List<User> users = new List<User>
-        {
-           new() {Username = "Willitest", Password = "12345" },
-           new() {Username = "Willitest2", Password = "testmdp" },
-           new() {Username = "Willitest3", Password = "azerty" }
-        };
+        private GameBackLogContext _context;
+
 
         [HttpPost("login")]
 
         public ActionResult<String> CheckAuth(User user)
         {
-            var authuser = users.FirstOrDefault(u => u.Username == user.Username);
+            var authuser = _context.Users.FirstOrDefault(u => u.Username == user.Username);
 
             if (authuser == null || user.Password != authuser.Password)
             {
@@ -51,5 +48,16 @@ namespace GameBackLogApi.Controllers
 
 
         }
+
+        [HttpPost("register")]
+
+        public ActionResult<User> CreateUser(User newUser)
+        {
+            _context.Add(newUser);
+            _context.SaveChanges();
+
+            return Ok("Nouvel Utilisateur crée");
+        }
+
     }
 }
