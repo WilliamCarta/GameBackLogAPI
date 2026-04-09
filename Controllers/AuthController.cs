@@ -25,7 +25,7 @@ namespace GameBackLogApi.Controllers
 
         [HttpPost("login")]
 
-        public ActionResult<User> CheckAuth(User user)
+        public ActionResult<String> CheckAuth(User user)
         {
             var authuser = users.FirstOrDefault(u => u.Username == user.Username);
 
@@ -37,8 +37,16 @@ namespace GameBackLogApi.Controllers
             {
                 var claims = new[] { new Claim(ClaimTypes.Name, authuser.Username) };
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]!));
-                var creds = new EncryptingCredentials(key, SecurityAlgorithms.HmacSha256);
-                JwtSecurityToken token = new JwtSecurityToken(_configuration["JWT:Issuer"], _configuration["JWT:Audience"], claims,DateTime.UtcNow.AddHours(1),creds);
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                    issuer:_configuration["JWT:Issuer"],
+                    audience: _configuration["JWT:Audience"],
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddHours(1),
+                    signingCredentials: creds);
+
+                return new JwtSecurityTokenHandler().WriteToken(token);
+
             }
 
 
