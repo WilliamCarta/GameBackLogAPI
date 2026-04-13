@@ -23,8 +23,8 @@ namespace GameBackLogApi.Controllers
             return _context.Games;
         }
 
-        //On crée une methode HttpGet pour récupérer le jeu que l'on souhaite en fonction de son id (URL/games/id)
-        //On utilise g => g.ID == id pour que FirstOrDefault nous retourne le jeu qui correspond à l'id, + propre que de chercher via l'index (games[id])
+        //Récupère le jeu en fonction de son id (URL/games/id)
+        //On utilise FirstOrDefault pour retourner le jeu qui correspond à l'id, + propre que de chercher via l'index (games[id])
 
         [HttpGet("{id}")]
         public ActionResult<Game> GetByID(int id)
@@ -40,6 +40,8 @@ namespace GameBackLogApi.Controllers
 
         }
 
+        //Ajoute un nouveau jeu dans la base de données
+
         [HttpPost]
 
         public ActionResult<Game> CreateGame(Game newGame)
@@ -48,6 +50,8 @@ namespace GameBackLogApi.Controllers
             _context.SaveChanges();
             return newGame;
         }
+
+        //Modifie les paramètres d'un jeu (status)
 
         [HttpPut("{id}")]
 
@@ -69,6 +73,8 @@ namespace GameBackLogApi.Controllers
 
 
         }
+
+        //Supprime un jeu de la base de données
 
         [HttpDelete("{id}")]
 

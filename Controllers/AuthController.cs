@@ -19,6 +19,7 @@ namespace GameBackLogApi.Controllers
 
         private GameBackLogContext _context;
 
+        //Permet de se connecter (Récupère un token valable 1 heure)
 
         [HttpPost("login")]
 
@@ -48,6 +49,8 @@ namespace GameBackLogApi.Controllers
 
 
         }
+
+        //Permet de créer un compte
 
         [HttpPost("register")]
 

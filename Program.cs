@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-//Pour le Swagger
+//Création du Swagger
 
 builder.Services.AddEndpointsApiExplorer();
 
