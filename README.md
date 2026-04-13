@@ -1,2 +1,70 @@
 # GameBackLogAPI
-API REST ASP.NET Core pour gérer une backlog de jeux vidéo personnelle
+
+ASP.NET Core REST API for managing a personal video game backlog
+
+
+# Technologies
+- C# (.NET 9)
+- ASP.NET Core 9
+- Entity Framework 9
+- JWT Authentication
+- Swagger
+
+
+# Installation
+Clone the repository: https://github.com/WilliamCarta/GameBackLogAPI
+Download .NET 9: https://dotnet.microsoft.com/fr-fr/download/dotnet/9.0
+Open the repository in Visual Studio
+Run the project (F5)
+Go to https://localhost:xxxxx/swagger for simplified usage
+
+
+# API Endpoints
+[Authentication]
+POST auth/register → Create an account
+POST auth/login → Login (returns access for 1 hour; re-login required afterward)
+
+A test account already exists →
+Login: TestSwagger
+Password: test
+
+[Games]
+GET /games → Retrieve all games in the backlog (your game list)
+GET /games/{id} → Retrieve a game by its ID
+POST /games → Add a game to the backlog
+PUT /games/{id} → Update a game’s parameters (e.g., change status from WISHLIST to PLAYING)
+DELETE /games/{id} → Remove a game from the backlog
+
+# Game model
+{
+  "ID": 1, (not required SQL define it automatically)
+  "Title": "Elden Ring",
+  "Genre": "AAA OpenWorld"
+  "Status": "PLAYING",
+}
+
+# Authentication
+Send a request to auth/register with:
+
+{
+  "Username": "YourUsername",
+  "Password": "YourPassword"
+}
+
+Send a request to auth/login.
+You will receive a token valid for 1 hour, which you must include in your requests.
+
+[Swagger Authorization]
+
+If you use Swagger, do the same and then:
+
+- Click on Authorize
+- Enter: Bearer [YourToken]
+
+
+# Possible Improvements
+Password hashing -> in a real production environment, passwords would be hashed (with bcrypt for example). In this project, they are stored in plain text in the database.
+English writing -> comments should be written in English
+Add more parameters -> Like rating or which platform (PC, PS5...)
+
+
